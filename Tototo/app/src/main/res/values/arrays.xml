@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <integer-array name="tab_icons">
+        <item>@drawable/icon_competitive_selector</item>
+        <item>@drawable/icon_game_selector</item>
+        <item>@drawable/icon_app_selector</item>
+        <item>@drawable/icon_assistant_selector</item>
+    </integer-array>
+
+    <string-array name="tab_titles">
+        <item>精选</item>
+        <item>游戏</item>
+        <item>应用</item>
+        <item>设置</item>
+    </string-array>
+
+    <!-- logo彩蛋tips -->
+    <string-array name="logo_tips">
+        <item>哎呀，已经到顶了</item>
+        <item>还在点？人家很累了 </item>
+        <item>好汉手下留情</item>
+    </string-array>
+</resources>

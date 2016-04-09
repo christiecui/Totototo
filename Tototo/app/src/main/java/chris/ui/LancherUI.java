@@ -1,16 +1,21 @@
 package chris.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.design.widget.TabLayout;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +26,13 @@ public class LancherUI extends TTFragmentActivity {
 
     ViewPager viewPager;
     TabLayout tabLayout;
+    DrawerLayout drawerLayout;
+
+    int iconsArrayRes = 0;
+    int titlesArrayRes = 0;
+    TypedArray icons;
+    String[] titles;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +45,25 @@ public class LancherUI extends TTFragmentActivity {
     }
 
     private void initView() {
+
+
+        iconsArrayRes = R.array.tab_icons;
+        titlesArrayRes = R.array.tab_titles;
+
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+
+        icons = getResources().obtainTypedArray(iconsArrayRes);
+        titles = getResources().getStringArray(titlesArrayRes);
 
         SampleFragmentPagerAdapter pagerAdapter =
                 new SampleFragmentPagerAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
+
+
 
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
@@ -50,20 +73,22 @@ public class LancherUI extends TTFragmentActivity {
         }
 
         viewPager.setCurrentItem(1);
+
     }
 
     public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 3;
-        private String tabTitles[] = new String[]{"TAB1","TAB2","TAB3"};
+
         private Context context;
 
 
         public View getTabView(int position) {
+            Resources resource = getResources();
             View v = LayoutInflater.from(context).inflate(R.layout.lancher_tab, null);
             TextView tv = (TextView) v.findViewById(R.id.textView);
-            tv.setText(tabTitles[position]);
+            tv.setText(titles[position]);
             ImageView img = (ImageView) v.findViewById(R.id.imageView);
-            //img.setImageResource(imageResId[position]);
+            img.setImageResource(icons.getResourceId(position, 0));
             return v;
         }
 
@@ -84,9 +109,8 @@ public class LancherUI extends TTFragmentActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
+            return titles[position];
         }
     }
-
 
 }

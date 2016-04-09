@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/drawer_home"
+            android:checked="true"
+            android:icon="@drawable/home"
+            android:title="@string/home"/>
+
+        <item
+            android:id="@+id/drawer_favourite"
+            android:icon="@drawable/collect"
+            android:title="@string/favourite"/>
+        ...
+
+        <item
+            android:id="@+id/drawer_settings"
+            android:icon="@drawable/helper"
+            android:title="@string/settings"/>
+
+        <item
+            android:id="@+id/drawer_developer_gate"
+            android:icon="@drawable/developer_gate"
+            android:title="@string/develop"/>
+
+    </group>
+</menu>
