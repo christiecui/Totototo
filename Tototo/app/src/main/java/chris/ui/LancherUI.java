@@ -1,8 +1,11 @@
 package chris.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -19,6 +22,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import chris.link.IntentUtils;
 import tototo.christiecui.tototo.R;
 
 
@@ -26,7 +30,7 @@ public class LancherUI extends TTFragmentActivity {
 
     ViewPager viewPager;
     TabLayout tabLayout;
-    DrawerLayout drawerLayout;
+    NavigationView navigationView;
 
     int iconsArrayRes = 0;
     int titlesArrayRes = 0;
@@ -52,7 +56,29 @@ public class LancherUI extends TTFragmentActivity {
 
         viewPager = (ViewPager)findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        navigationView = (NavigationView)findViewById(R.id.navigation_view);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                int menuId = menuItem.getItemId();
+                switch (menuId){
+                    case R.id.drawer_home:
+                        break;
+                    case R.id.drawer_favourite:
+                        break;
+                    case R.id.drawer_settings:
+                        break;
+                    case R.id.drawer_developer_gate:
+                        Context context = LancherUI.this;
+                        Intent intent = new Intent(context, FirstUI.class);
+                        context.startActivity(intent);
+                        break;
+                }
+                return true;
+
+            }
+        });
 
         icons = getResources().obtainTypedArray(iconsArrayRes);
         titles = getResources().getStringArray(titlesArrayRes);
@@ -112,5 +138,7 @@ public class LancherUI extends TTFragmentActivity {
             return titles[position];
         }
     }
+
+
 
 }

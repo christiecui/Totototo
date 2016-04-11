@@ -13,8 +13,6 @@
             android:id="@+id/drawer_favourite"
             android:icon="@drawable/collect"
             android:title="@string/favourite"/>
-        ...
-
         <item
             android:id="@+id/drawer_settings"
             android:icon="@drawable/helper"
@@ -24,6 +22,5 @@
             android:id="@+id/drawer_developer_gate"
             android:icon="@drawable/developer_gate"
             android:title="@string/develop"/>
-
     </group>
 </menu>

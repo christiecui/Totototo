@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
@@ -16,6 +16,10 @@
         <item name="tabPaddingEnd">12dp</item>
         <item name="tabBackground">@color/tab_bgcolor</item>
         <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="ChrisNaviagationLayout" parent="Widget.Design.NavigationView">
+        <item name="android:background">@color/tab_bgcolor</item>
     </style>
 
 </resources>
