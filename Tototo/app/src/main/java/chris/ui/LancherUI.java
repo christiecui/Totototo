@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import chris.link.IntentUtils;
 import tototo.christiecui.tototo.R;
 
@@ -62,16 +64,20 @@ public class LancherUI extends TTFragmentActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 int menuId = menuItem.getItemId();
+                Context context = LancherUI.this;
+                Intent intent;
                 switch (menuId){
                     case R.id.drawer_home:
                         break;
                     case R.id.drawer_favourite:
+                        intent = new Intent(context, WebViewUI.class);
+                        context.startActivity(intent);
                         break;
                     case R.id.drawer_settings:
+
                         break;
                     case R.id.drawer_developer_gate:
-                        Context context = LancherUI.this;
-                        Intent intent = new Intent(context, FirstUI.class);
+                        intent = new Intent(context,DevelopingUI.class);
                         context.startActivity(intent);
                         break;
                 }
@@ -98,7 +104,7 @@ public class LancherUI extends TTFragmentActivity {
             }
         }
 
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
 
     }
 
@@ -130,6 +136,7 @@ public class LancherUI extends TTFragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
+//            return getTab(position);
             return PageFragment.newInstance(position + 1);
         }
 
@@ -139,6 +146,19 @@ public class LancherUI extends TTFragmentActivity {
         }
     }
 
+//    private HashMap<Integer, MMFragment> mainTabCache = new HashMap<Integer, MMFragment>();
+//
+//    private Fragment getTab(int position) {
+//        if (position < 0)
+//            return null;
+//        if (mainTabCache.containsKey(position)) {
+//            return mainTabCache.get(position);
+//        } else {
+//            MMFragment newFragment = createFragment(position);
+//            mainTabCache.put(position, newFragment);
+//            return newFragment;
+//        }
+//    }
 
 
 }

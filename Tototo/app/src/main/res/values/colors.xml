@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
+    <!-- webview start -->
+    <color name="webview_progress_bg">#5AC858</color>
+    <!-- webview end -->
+
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="tab_bgcolor">#303F9F</color>
     <color name="tab_text">#eeeeee</color>
+    <color name="black">#000000</color>
 </resources>
