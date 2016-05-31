@@ -104,7 +104,7 @@ public class LancherUI extends TTFragmentActivity {
             }
         }
 
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(1);
 
     }
 

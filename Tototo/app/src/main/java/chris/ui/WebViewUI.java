@@ -11,8 +11,12 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.ConsoleMessage;
 import android.webkit.DownloadListener;
+import android.webkit.JsPromptResult;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,6 +24,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ZoomButtonsController;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -35,11 +43,12 @@ public class WebViewUI extends TTFragmentActivity  {
 
     private static final String TAG = "WebViewUI";
     private static final String UA_PREFIX = "tototo";
+    private static final String FETCH_QUEUE = "javascript:WeixinJSBridge._fetchQueue()";
     private Context context;
     private WebView webView;
     private ProgressBar loadingView;
     private RelativeLayout browserContentView;
-    private String url = "https://www.baidu.com/";
+    private String url = "file:///android_asset/demo.html";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +59,68 @@ public class WebViewUI extends TTFragmentActivity  {
         initView();
         initSetting();
         doRefresh();
+
     }
+
+    private void loadJavaScript() {
+        String jsContent = null;
+        try {
+            jsContent =convertStreamToString(webView.getContext().getAssets().open("jsapi/wxjs.js"));
+//            if(isDgtVerify) {
+//                jsContent = jsContent.replace("isUseMd5_check", "yes");
+//                jsContent = jsContent.replace("xx_yy", randomStr);
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsContent = null;
+        }
+
+        if (jsContent == null) {
+            Log.e(TAG, "loadJavaScript fail, jsContent is null");
+        }
+
+        if (webView == null) {
+            Log.e(TAG, "loadJavaScript, viewWV is null");
+        }
+
+        webView.evaluateJavascript("javascript:" + jsContent, new ValueCallback<String>() {
+
+            @Override
+            public void onReceiveValue(String value) {
+                Log.i(TAG, "loadJavaScript, evaluateJavascript cb, ret = %s");
+            }
+        });
+
+        Log.i(TAG, "jsapi init done");
+    }
+
+    public interface ValueCallback<T> extends android.webkit.ValueCallback<T> {
+        void onReceiveValue(T var1);
+    }
+
+    public static String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return sb.toString();
+    }
+
 
 
     private void doRefresh() {
@@ -184,6 +254,7 @@ public class WebViewUI extends TTFragmentActivity  {
         }
 
         webView.setWebViewClient(new MyWebViewClient());
+        webView.setWebChromeClient(new MyWebViewChromeClient());
         webView.setDownloadListener(new DownloadListener() {
 
             @Override
@@ -221,6 +292,8 @@ public class WebViewUI extends TTFragmentActivity  {
             setTitle(title);
         }
 
+
+
     };
 
     private class MyWebViewClient extends WebViewClient {
@@ -228,6 +301,7 @@ public class WebViewUI extends TTFragmentActivity  {
         @Override
         public void onPageFinished(WebView view, String url) {
             loadingView.setVisibility(View.GONE);
+//            loadJavaScript();
             setSupportZoom(true);
         }
 
@@ -239,6 +313,8 @@ public class WebViewUI extends TTFragmentActivity  {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            Log.i("cuiqi","~~~~~~~~~~~~~~~~~~~~~~~~~~1111111111+url= "+ url);
             if (TextUtils.isEmpty(url)) {
                 return false;
             }
@@ -249,8 +325,44 @@ public class WebViewUI extends TTFragmentActivity  {
             return super.shouldOverrideUrlLoading(view,url);
         }
 
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request)  {
+            Log.i("cuiqi","~~~~~~~~~~~gaoji~~intercept+url= "+ request.getUrl().toString());
+
+//            webView.evaluateJavascript(FETCH_QUEUE, null);
+            return super.shouldInterceptRequest(view, request);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view,
+                                                          String url) {
+            Log.i("cuiqi","~~~~~~~~~~~~~intercept+url= "+ url);
+//            webView.evaluateJavascript(FETCH_QUEUE, null);
+            return null;
+        }
+
     }
 
+    private class MyWebViewChromeClient extends WebChromeClient {
+        @Override
+        public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+            Log.i("cuiqi","~~~~~~~~~~~~~onJsPrompt+defaultValue= "+ defaultValue );
+            Log.i("cuiqi","~~~~~~~~~~~~~onJsPrompt+message= "+ message );
+            Log.i("cuiqi","~~~~~~~~~~~~~onJsPrompt+url= "+ url );
+            Log.i("cuiqi","~~~~~~~~~~~~~onJsPrompt+result= "+ result );
+            if(message.startsWith("cuiqi")){
+                result.confirm();
+                return true;
+            }
+            return super.onJsPrompt(view, url, message, defaultValue, result);
+        }
+
+        @Override
+        public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+            Log.i("cuiqi","~~~~~~~~~~~~~consoleMessage= "+ consoleMessage.message() );
+            return super.onConsoleMessage(consoleMessage);
+        }
+    }
     private void setSupportZoom(boolean isEanable) {
         if (webView != null) {
             webView.getSettings().setSupportZoom(isEanable);

@@ -3,22 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout"
     tools:context="chris.ui.SurfaceDemoUI">
 
     <SurfaceView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#890521"
+        android:background="@android:color/transparent"
         android:id="@+id/surface_view">
-
     </SurfaceView>
 
-    <Button
+
+    <chris.ui.DragableView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="#eeeeee"
-        android:id="@+id/button"/>
-
+        android:id="@+id/button2"/>
 
 
 </RelativeLayout>

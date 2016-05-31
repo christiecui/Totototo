@@ -1,0 +1,23 @@
+<html>
+<head>
+</head>
+  <body>
+  <p id="demo">demo html</p>
+    <script>
+
+	  function changetext(id)
+    {
+        <!--_setResultIframe = document.createElement('script');-->
+        <!--document.body.appendChild(_setResultIframe);-->
+       <!--_setResultIframe.src = 'cuiqi://private/setresult/'+ i;-->
+        prompt('cuiqi://private/setresult/');
+        <!--console.log('cuiqi://private/setresult/');-->
+
+
+    id.innerHTML="谢谢!";
+    }
+    </script>
+
+  <h1 onclick="changetext(this)">请点击该文本</h1>
+  </body>  
+</html>  
